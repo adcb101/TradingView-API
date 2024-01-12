@@ -1,18 +1,15 @@
-import * as cron from 'cron';
-
 const fs = require('fs');
 const TradingView = require('../main');
 const sqlite3 = require('sqlite3').verbose();
-const Util = require('./scheduleHelper');
 
 /**
  * This examples synchronously fetches  some sotock data from 1 indicators
  */
 
 // 'BINANCE:ADAUSDT',  'BINANCE:MATICUSDT'
-// const multarget = ['BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'BINANCE:BNBUSDT', 'BINANCE:SOLUSDT', 'BINANCE:XRPUSDT', 'BINANCE:AVAXUSDT'];
+const multarget = ['BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'BINANCE:BNBUSDT', 'BINANCE:SOLUSDT', 'BINANCE:XRPUSDT', 'BINANCE:AVAXUSDT'];
 // 'SP:S5INFT', 'SP:SPN', 'SP:S5UTIL', 'SP:S5MATR', 'SP:S5REAS', 'SP:SPF', 'SP:S5INDU', 'SP:S5CONS', 'SP:S5COND', 'SP:S5TELS', 'SP:SPSIBI', 'SP:S5HLTH'
-const multarget = ['SP:S5INFT', 'SP:SPN', 'SP:S5UTIL', 'SP:S5MATR', 'SP:S5REAS', 'SP:SPF', 'SP:S5INDU', 'SP:S5CONS', 'SP:S5COND', 'SP:S5TELS', 'SP:SPSIBI', 'SP:S5HLTH'];
+//const multarget = ['SP:S5INFT', 'SP:SPN', 'SP:S5UTIL', 'SP:S5MATR', 'SP:S5REAS', 'SP:SPF', 'SP:S5INDU', 'SP:S5CONS', 'SP:S5COND', 'SP:S5TELS', 'SP:SPSIBI', 'SP:S5HLTH'];
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function getIndicDataAsync(target, indicator) {
@@ -165,6 +162,12 @@ async function fetchIndicData() {
   //   });
   // });
   /// insert data.
+  db.run('DELETE FROM targets WHERE 1 = 1', function (err) {
+    if (err) {
+      return console.log(err.message);
+    }
+    console.log('deleted targets: ', this);
+  });
   const insertTileSql = `insert into targets
   (target, time, trend,close_ema55,close_ema144,close_ema288,close_ema576,low_ema55,low_ema144,low_ema288,low_ema576,high_ema55,high_ema144,high_ema288,high_ema576,createTime) 
   values(?, ?, ?,?, ?, ?,?, ?, ?,?, ?, ?,?, ?, ?,?)`;
@@ -180,9 +183,11 @@ async function fetchIndicData() {
   });
 
   // console.log(text);
-  db.all('select * from targets', (err, row) => {
-    console.log(JSON.stringify(row));
-  });
+  // db.all('select * from targets', (err, row) => {
+  //   console.log(JSON.stringify(row));
+  // });
+ 
+
   db.close();
   // console.log(indicDataAsync);
   console.log('All done !');
@@ -191,4 +196,3 @@ async function fetchIndicData() {
 (async () => {
   await fetchIndicData();
 })();
-

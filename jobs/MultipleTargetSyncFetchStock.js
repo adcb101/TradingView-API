@@ -1,9 +1,6 @@
-import * as cron from 'cron';
-
 const fs = require('fs');
 const TradingView = require('../main');
 const sqlite3 = require('sqlite3').verbose();
-const Util = require('./scheduleHelper');
 
 /**
  * This examples synchronously fetches  some sotock data from 1 indicators
@@ -165,6 +162,12 @@ async function fetchIndicData() {
   //   });
   // });
   /// insert data.
+  db.run('DELETE FROM targets WHERE 1 = 1', function (err) {
+    if (err) {
+      return console.log(err.message);
+    }
+    console.log('deleted targets: ', this);
+  });
   const insertTileSql = `insert into targets
   (target, time, trend,close_ema55,close_ema144,close_ema288,close_ema576,low_ema55,low_ema144,low_ema288,low_ema576,high_ema55,high_ema144,high_ema288,high_ema576,createTime) 
   values(?, ?, ?,?, ?, ?,?, ?, ?,?, ?, ?,?, ?, ?,?)`;
@@ -183,6 +186,8 @@ async function fetchIndicData() {
   db.all('select * from targets', (err, row) => {
     console.log(JSON.stringify(row));
   });
+ 
+
   db.close();
   // console.log(indicDataAsync);
   console.log('All done !');
@@ -191,4 +196,3 @@ async function fetchIndicData() {
 (async () => {
   await fetchIndicData();
 })();
-
