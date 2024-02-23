@@ -37,38 +37,35 @@ const bree = new Bree({
 
     // runs `./jobs/some-other-path.js` on start cron: ' 0 0/4 * * ?',
     {
-      name: 'MultipleTargetSyncFetchStock',
-      path: path.join(__dirname, 'jobs', 'MultipleTargetSyncFetchStock.js'),
-      cron: '0 58 16 ? * *',
-      cronValidate: {
-        override: {
-          useSeconds: true,
-          useBlankDay: true,
-        },
-      },
-    },
-    // {
-    //   name: 'MultipleTargetSyncFetchStock1',
-    //   path: path.join(__dirname, 'jobs', 'MultipleTargetSyncFetchStock.js'),
-    //   cron: '30 52 16 ? * *',
-    //   cronValidate: {
-    //     override: {
-    //       useBlankDay: true,
-    //       useSeconds: true,
-    //     },
-    //   },
-    // },
-    // {
-    //   name: 'MultipleTargetSyncFetchCrypt',
-    //   path: path.join(__dirname, 'jobs', 'MultipleTargetSyncFetchCrypt.js'),
-    //   cron: '0 49 16 ? * *',
-    //   cronValidate: {
-    //     override: {
-    //       useBlankDay: true,
-    //       useSeconds: true,
-    //     },
-    //   },
-    // },
+       name: 'MultipleTargetSyncFetchStock',
+       path: path.join(__dirname, 'jobs', 'MultipleTargetSyncFetchStock.js'),
+       cron: '31 18 ? * 1-5',
+       cronValidate: {
+         override: {
+           useBlankDay: true,
+            },
+       },
+     },
+     {
+       name: 'MultipleTargetSyncFetchStock1',
+       path: path.join(__dirname, 'jobs', 'MultipleTargetSyncFetchStock.js'),
+       cron: '1 21 ? * 1-5',
+       cronValidate: {
+         override: {
+           useBlankDay: true,
+            },
+       },
+     },
+     {
+       name: 'MultipleTargetSyncFetchCrypt',
+       path: path.join(__dirname, 'jobs', 'MultipleTargetSyncFetchCrypt.js'),
+       cron: '1 0/4 ? * *',
+       cronValidate: {
+         override: {
+           useBlankDay: true,
+            },
+       },
+     },
 
   ],
 });
